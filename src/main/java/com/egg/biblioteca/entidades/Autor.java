@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 @Entity
 public class Autor {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String nombre;
 

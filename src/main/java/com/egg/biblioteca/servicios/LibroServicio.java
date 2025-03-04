@@ -1,6 +1,9 @@
 package com.egg.biblioteca.servicios;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +38,28 @@ public class LibroServicio {
         libro.setAutor(autor);
         libro.setEditorial(editorial);
         libroRepositorio.save(libro);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Libro> listarLibros() {
+        List<Libro> libros = new ArrayList<>();
+
+        libros = libroRepositorio.findAll();
+        return libros;
+    }
+
+    @Transactional
+    public void modificarLibro(Long isbn, String titulo, Integer ejemplares, String idAutor, String idEditorial) {
+        Optional<Libro> respuesta = libroRepositorio.findById(isbn);
+        if (respuesta.isPresent()) {
+            Libro libro = respuesta.get();
+            libro.setTitulo(titulo);
+            libro.setEjemplares(ejemplares);
+            Autor autor = autorRepositorio.findById(UUID.fromString(idAutor)).get();
+            Editorial editorial = editorialRepositorio.findById(UUID.fromString(idEditorial)).get();
+            libro.setAutor(autor);
+            libro.setEditorial(editorial);
+            libroRepositorio.save(libro);
+        }
     }
 }
