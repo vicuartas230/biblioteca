@@ -3,7 +3,6 @@ package com.egg.biblioteca.servicios;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +23,6 @@ public class AutorServicio {
         validar(nombre);
         Autor autor = new Autor();// Instancio un objeto del tipo Autor
         autor.setNombre(nombre);// Seteo el atributo, con el valor recibido como parámetro
-        System.out.println("###################AUTOR UUID: " + autor.getId());
         autorRepositorio.save(autor); // Persisto el dato en mi BBDD
     }
 
@@ -39,7 +37,7 @@ public class AutorServicio {
     @Transactional
     public void modificarAutor(String nombre, String id) throws MiExcepcion {
         validar(nombre);     
-        Optional<Autor> respuesta = autorRepositorio.findById(UUID.fromString(id));
+        Optional<Autor> respuesta = autorRepositorio.findById(id);
         if (respuesta.isPresent()) {
             Autor autor = respuesta.get();
            

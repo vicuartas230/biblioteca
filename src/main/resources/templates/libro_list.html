@@ -62,33 +62,30 @@
                 </li>
               </ul>
             </div>
-          </nav>
+        </nav>
         <div class="container-fluid m-5 contenedor">
-
-            <form class="formulario" th:action="@{/editorial/registro}" method="POST" >
-
-                <div th:if="${error != null}" class="card text-white bg-danger mb-3 mensajeError" >
-                    <div class="card-body">
-                        <h5 class="card-title">Error 👎</h5>
-                        <p class="card-text" th:text="${error}"></p>
-                    </div>
-                </div>
-                <div th:if="${exito != null}" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
-                    <div class="card-body">
-                        <h5 class="card-title">Exito!</h5>
-                        <p class="card-text" th:text="${exito}"></p>
-                    </div>
-                </div>
-
-                <div class="form-group my-3">
-                    <label class="mb-2">Cargar Editoriales</label>
-                    <input type="text" class="form-control" name="nombre" placeholder="Nombre de la editorial">
-                </div>
-
-                <button type="submit" class="btn btn-primary mt-3 botones">Guardar</button>
-            </form>
-
-                    <section class=" text-center container">
+            <h1 class="mb-4 text-center">Lista de Libros</h1>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ISBN</th>
+                        <th>Titulo</th>
+                        <th>Ejemplares</th>
+                        <th>Autor</th>
+                        <th>Editorial</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="libro : ${libros}">
+                        <td th:text="${libro.isbn}"></td>
+                        <td th:text="${libro.titulo}"></td>
+                        <td th:text="${libro.ejemplares}"></td>
+                        <td th:text="${libro.autor.nombre}"></td>
+                        <td th:text="${libro.editorial.nombre}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <section class=" text-center container">
                 <div class="row mt-3">
                     <div class="divVolver">
                         <a th:href="@{/}" class="btn btn-secondary my-2 botonVolver botones">Volver</a>

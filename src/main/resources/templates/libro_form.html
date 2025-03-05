@@ -102,16 +102,14 @@
                 <div class="form-group my-3">
 
                     <select name="idAutor">
-
                         <option>Seleccionar Autor</option>
-
-                        
+                        <option th:each="autor : ${autores}" th:value="${autor.id}" th:text="${autor.nombre}"></option>
                     </select>
                 </div>
                 <div class="form-group my-3">
                     <select name="idEditorial">  
                         <option>Seleccionar Editorial</option>
-                       
+                        <option th:each="editorial : ${editoriales}" th:value="${editorial.id}" th:text="${editorial.nombre}"></option>
                     </select>
                 </div>
 
