@@ -65,6 +65,11 @@ public class LibroServicio {
         }
     }
 
+    @Transactional(readOnly = true)
+    public Libro getOne(Long isbn) {
+        return libroRepositorio.getReferenceById(isbn);
+    }
+
     private void validar(String titulo) throws MiExcepcion {
         if (titulo == null || titulo.isEmpty()) {
             throw new MiExcepcion("El título del libro no puede ser nulo ni estar vacío.");

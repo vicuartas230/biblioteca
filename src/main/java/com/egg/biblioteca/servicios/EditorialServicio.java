@@ -45,6 +45,11 @@ public class EditorialServicio {
         }
     }
 
+    @Transactional(readOnly = true)
+    public Editorial getOne(String id) {
+        return editorialRepositorio.getReferenceById(id);
+    }
+
     private void validar(String nombre) throws MiExcepcion {
         if (nombre == null || nombre.isEmpty()) {
             throw new MiExcepcion("El nombre de la editorial no puede ser nulo.");
