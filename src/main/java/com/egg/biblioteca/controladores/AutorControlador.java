@@ -6,6 +6,7 @@ import java.util.logging.Level;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +47,6 @@ public class AutorControlador {
     public String lista(ModelMap modelo) {
         List<Autor> autores = autorServicio.listarAutores();
         modelo.addAttribute("autores", autores);
-        return "autor_lista.html";
+        return "autor_list.html";
     }
 }
