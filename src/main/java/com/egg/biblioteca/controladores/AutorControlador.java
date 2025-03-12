@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +25,13 @@ public class AutorControlador {
     @Autowired
     private AutorServicio autorServicio;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/registrar")
     public String registrar() {
         return "autor_form.html";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/registro")
     public String registro(@RequestParam String nombre, ModelMap modelo) {
 
@@ -43,6 +46,7 @@ public class AutorControlador {
         return "index.html";
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/lista")
     public String lista(ModelMap modelo) {
         List<Autor> autores = autorServicio.listarAutores();
