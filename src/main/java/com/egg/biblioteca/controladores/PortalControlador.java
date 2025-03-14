@@ -1,5 +1,7 @@
 package com.egg.biblioteca.controladores;
 
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.egg.biblioteca.entidades.Usuario;
 import com.egg.biblioteca.excepciones.MiExcepcion;
@@ -18,6 +21,8 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/")
 public class PortalControlador {
+
+    private static final Logger LOGGER = Logger.getLogger(UsuarioServicio.class.getName());
 
     @Autowired
     private UsuarioServicio usuarioServicio;
@@ -39,12 +44,13 @@ public class PortalControlador {
         @RequestParam String email,
         @RequestParam String password,
         @RequestParam String password2,
+        @RequestParam MultipartFile archivo,
         ModelMap model
     ) {
         try {
-            usuarioServicio.registrar(nombre, email, password, password2);
+            usuarioServicio.registrar(archivo, nombre, email, password, password2);
             model.put("exito", "Usuario registrado con éxito");
-            return "index.html";
+            return "login.html";
         } catch (MiExcepcion ex) {
             model.put("error", ex.getMessage());
             model.put("nombre", nombre);

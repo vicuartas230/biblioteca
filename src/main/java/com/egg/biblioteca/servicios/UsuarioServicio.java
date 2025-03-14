@@ -2,6 +2,7 @@ package com.egg.biblioteca.servicios;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.egg.biblioteca.entidades.Imagen;
 import com.egg.biblioteca.entidades.Usuario;
 import com.egg.biblioteca.enumeraciones.Rol;
 import com.egg.biblioteca.excepciones.MiExcepcion;
@@ -25,9 +28,14 @@ import jakarta.servlet.http.HttpSession;
 
 @Service
 public class UsuarioServicio implements UserDetailsService {
+
+    private static final Logger LOGGER = Logger.getLogger(UsuarioServicio.class.getName());
     
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
+
+    @Autowired
+    private ImagenServicio imagenServicio;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -46,14 +54,23 @@ public class UsuarioServicio implements UserDetailsService {
     }
 
     @Transactional
-    public void registrar(String nombre, String email, String password, String password2) throws MiExcepcion {
+    public void registrar(MultipartFile archivo, String nombre, String email, String password, String password2) throws MiExcepcion {
+        LOGGER.info("Registrando usuario");
         validar(nombre, email, password, password2);
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
         usuario.setEmail(email);
         usuario.setPassword(new BCryptPasswordEncoder().encode(password));
         usuario.setRol(Rol.USER);
+        Imagen imagen = imagenServicio.guardar(archivo);
+        usuario.setImagen(imagen);
         usuarioRepositorio.save(usuario);
+        LOGGER.info("Usuario registrado");
+    }
+
+    @Transactional
+    public Usuario getOne(String id) {
+        return usuarioRepositorio.buscarPorId(id);
     }
 
     private void validar(String nombre, String email, String password, String password2) throws MiExcepcion {
