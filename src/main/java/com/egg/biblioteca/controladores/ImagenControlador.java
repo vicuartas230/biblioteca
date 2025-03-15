@@ -37,7 +37,7 @@ public class ImagenControlador {
     }
 
     @PostMapping("/perfil/{id}")
-    public ResponseEntity<String> actualziarImagenPerfil(@PathVariable String id, @RequestParam("archivo") MultipartFile archivo) {
+    public ResponseEntity<String> actualizarImagenPerfil(@PathVariable String id, @RequestParam("archivo") MultipartFile archivo) {
         try {
             imagenServicio.actualizar(archivo, id);
             return new ResponseEntity<>("Imagen actualizada exitosamente", HttpStatus.OK);

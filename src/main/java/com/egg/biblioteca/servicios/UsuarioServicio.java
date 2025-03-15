@@ -1,7 +1,9 @@
 package com.egg.biblioteca.servicios;
 
+import java.lang.foreign.Linker.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,6 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class UsuarioServicio implements UserDetailsService {
 
-    private static final Logger LOGGER = Logger.getLogger(UsuarioServicio.class.getName());
-    
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
 
@@ -55,7 +55,6 @@ public class UsuarioServicio implements UserDetailsService {
 
     @Transactional
     public void registrar(MultipartFile archivo, String nombre, String email, String password, String password2) throws MiExcepcion {
-        LOGGER.info("Registrando usuario");
         validar(nombre, email, password, password2);
         Usuario usuario = new Usuario();
         usuario.setNombre(nombre);
@@ -65,12 +64,47 @@ public class UsuarioServicio implements UserDetailsService {
         Imagen imagen = imagenServicio.guardar(archivo);
         usuario.setImagen(imagen);
         usuarioRepositorio.save(usuario);
-        LOGGER.info("Usuario registrado");
     }
 
     @Transactional
     public Usuario getOne(String id) {
-        return usuarioRepositorio.buscarPorId(id);
+        return usuarioRepositorio.getReferenceById(id);
+    }
+
+    @Transactional
+    public List<Usuario> listarUsuarios() {
+        return usuarioRepositorio.findAll();
+    }
+
+    @Transactional
+    public void cambiarRol(String id) {
+        Usuario usuario = usuarioRepositorio.buscarPorId(id);
+        if (usuario.getRol().equals(Rol.USER)) {
+            usuario.setRol(Rol.ADMIN);
+        } else {
+            usuario.setRol(Rol.USER);
+        }
+        usuarioRepositorio.save(usuario);
+    }
+
+    @Transactional
+    public void modificarUsuario(MultipartFile archivo, String id, String nombre, String email, String rol, String password, String password2) throws MiExcepcion {
+        Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
+        if (respuesta.isPresent()) {
+            Usuario usuario = respuesta.get();
+            usuario.setNombre(nombre);
+            usuario.setEmail(email);
+            usuario.setPassword(new BCryptPasswordEncoder().encode(password));
+            usuario.setRol(rol.equals("ADMIN") ? Rol.ADMIN : Rol.USER);
+            Imagen imagen = usuario.getImagen();
+            if (archivo != null) {
+                imagenServicio.eliminar(imagen.getId());
+                Imagen nuevaImagen = imagenServicio.guardar(archivo);
+                usuario.setImagen(nuevaImagen);
+            }
+            usuarioRepositorio.save(usuario);
+            
+        }
     }
 
     private void validar(String nombre, String email, String password, String password2) throws MiExcepcion {

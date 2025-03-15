@@ -54,6 +54,10 @@ public class ImagenServicio {
         return null;
     }
 
+    public void eliminar(String id) {
+        imagenRepositorio.deleteById(id);
+    }
+
     @Transactional(readOnly = true)
     public List<Imagen> listarTodos() {
         return imagenRepositorio.findAll();

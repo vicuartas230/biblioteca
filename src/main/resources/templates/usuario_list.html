@@ -10,19 +10,30 @@
             <table class="table table-dark">
                 <thead>
                     <tr>
-                        <th scope="col">Id de la Editorial</th>
-                        <th scope="col">Nombre de la Editorial</th>
-                        <th sec:authorize="hasRole('ROLE_ADMIN')" scope="col">Acciones</th>
+                        <th scope="col">Id del Usuario</th>
+                        <th scope="col">Nombre del Usuario</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Rol</th>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Acciones</th>
+
                     </tr>
                 </thead>
-                <tbody th:each="editorial : ${editoriales}"> 
+                <tbody th:each="usuario : ${usuarios}"> 
                     <tr>
-                        <th scope="row" th:text="${editorial.id}"></th>
-                        <td th:text="${editorial.nombre}"></td>
-                        <td sec:authorize="hasRole('ROLE_ADMIN')">
-                            <a th:href= "@{/editorial/modificar/__${editorial.id}__}"><i class="fas fa-feather-alt">  </i> Modificar </a>
+                        <th scope="row" th:text="${usuario.id}"></th>
+                        <td th:text="${usuario.nombre}"></td>
+                        <td th:text="${usuario.email}"></td>
+                        <td th:text="${usuario.rol}"></td>
+                        <td>
+                            <img th:src="@{/imagen/perfil/{id}(id=${usuario.id})}" alt="Imagen de Usuario" width="50" height="50" style="border-radius: 50%;">
                         </td>
+                        <td>
+                            <a th:href= "@{/admin/modificarUsuario/{id}(id=${usuario.id})}"><i class="fas fa-feather-alt">  </i> Modificar </a>
+                        </td>
+
                     </tr>
+
                 </tbody>
             </table>
 
@@ -64,4 +75,4 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </body>
 
-</html>            
+</html>

@@ -63,6 +63,7 @@
                     <a class="navbar-brand" href="#">BIBLIOTECA EGG</a>
                 </div>
                 <div class="container contenedorLibros">
+                    <img th:src="@{/imagen/perfil/{id}(id=${session.usuariosession.id})}" alt="Imagen de Perfil" width="300" height="200">
                     <p class="tituloLibros" th:if="${session.usuariosession != null}" th:text=" 'Hola de vuelta '+ ${session.usuariosession.nombre} "></p>
                     <a class="btn btn-xl mt-2 boton">Ver Listado</a>
                 </div>

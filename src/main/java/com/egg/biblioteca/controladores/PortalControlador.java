@@ -22,8 +22,6 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/")
 public class PortalControlador {
 
-    private static final Logger LOGGER = Logger.getLogger(UsuarioServicio.class.getName());
-
     @Autowired
     private UsuarioServicio usuarioServicio;
 
