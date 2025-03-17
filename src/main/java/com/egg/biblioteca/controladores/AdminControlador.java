@@ -34,11 +34,11 @@ public class AdminControlador {
         return "usuario_list.html";
     }
 
-    // @PostMapping("/cambiarRol")
-    // public String cambiarRol(String id) {
-    //     usuarioServicio.cambiarRol(id);
-    //     return "redirect:/inicio";
-    // }
+    @PostMapping("/cambiarRol/{id}")
+    public String cambiarRol(@PathVariable String id) {
+        usuarioServicio.cambiarRol(id);
+        return "redirect:/admin/usuarios";
+    }
 
     @GetMapping("/modificarUsuario/{id}")
     public String modificar(@PathVariable String id, ModelMap modelo) {

@@ -1,10 +1,8 @@
 package com.egg.biblioteca.servicios;
 
-import java.lang.foreign.Linker.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -91,13 +89,14 @@ public class UsuarioServicio implements UserDetailsService {
     public void modificarUsuario(MultipartFile archivo, String id, String nombre, String email, String rol, String password, String password2) throws MiExcepcion {
         Optional<Usuario> respuesta = usuarioRepositorio.findById(id);
         if (respuesta.isPresent()) {
+            validar(nombre, email, password, password2);
             Usuario usuario = respuesta.get();
             usuario.setNombre(nombre);
             usuario.setEmail(email);
             usuario.setPassword(new BCryptPasswordEncoder().encode(password));
             usuario.setRol(rol.equals("ADMIN") ? Rol.ADMIN : Rol.USER);
             Imagen imagen = usuario.getImagen();
-            if (archivo != null) {
+            if (!archivo.isEmpty()) {
                 imagenServicio.eliminar(imagen.getId());
                 Imagen nuevaImagen = imagenServicio.guardar(archivo);
                 usuario.setImagen(nuevaImagen);

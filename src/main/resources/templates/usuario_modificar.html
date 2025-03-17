@@ -37,9 +37,9 @@
 
                     <div class="form-group my-3">
 
-                        <select name="idAutor">
+                        <select name="rol">
                             <option>Seleccionar Rol</option>
-                            <option th:each="rol : ${roles}" th:text="${rol}" th:value="${usuario.rol}" th:selected="${rol == usuario.rol}"></option>
+                            <option th:each="rol : ${roles}" th:text="${rol}" th:value="${rol}" th:selected="${rol == usuario.rol}"></option>
                         </select>
                     </div>
 
@@ -49,8 +49,6 @@
                     <div class="form-group my-3">
                         <input type="password" class="form-control" name="password2" placeholder="REPETIR CONTRASEÑA">
                     </div>
-        
-                    <!-- <button type="submit" class="btn btn-primary mt-3 botones">Editar</button> -->
                 </div>
 
                 <button type="submit" class="btn btn-primary mt-3 botones">Editar</button>

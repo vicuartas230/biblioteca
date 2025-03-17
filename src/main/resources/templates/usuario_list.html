@@ -29,7 +29,13 @@
                             <img th:src="@{/imagen/perfil/{id}(id=${usuario.id})}" alt="Imagen de Usuario" width="50" height="50" style="border-radius: 50%;">
                         </td>
                         <td>
-                            <a th:href= "@{/admin/modificarUsuario/{id}(id=${usuario.id})}"><i class="fas fa-feather-alt">  </i> Modificar </a>
+                            <a th:href= "@{/admin/modificarUsuario/{id}(id=${usuario.id})}" class="btn btn-link"><i class="fas fa-feather-alt">  </i> Modificar </a>
+                            <div th:switch="${usuario.rol.toString()}=='USER'">
+                                <form th:action="@{/admin/cambiarRol/{id}(id=${usuario.id})}" method="POST">
+                                    <button th:case="true" type="submit" class="btn btn-link">Hacer ADMIN</button>
+                                    <button th:case="false" type="submit" class="btn btn-link">Hacer USER</button>
+                                </form>
+                            </div>
                         </td>
 
                     </tr>
